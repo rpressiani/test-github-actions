@@ -46,6 +46,7 @@ jobs:
           tags: |
             type=sha,prefix=,suffix=,format=short
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=ref,event=tag
 
       - name: Build and Push Multi-Architecture Image
         uses: docker/build-push-action@v5
