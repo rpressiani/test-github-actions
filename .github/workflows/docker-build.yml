@@ -1,4 +1,4 @@
-name: Docker Build & Push (GHCR)
+name: Docker Build & Push
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
       - 'v*.*.*'
 
 env:
-  # The name of the Docker image repository on GHCR
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -16,15 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # Necessary to push to GHCR
+      packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up QEMU (for multi-arch build)
-        # This step registers QEMU binaries to allow Docker Buildx to cross-compile
-        # for different architectures like arm64 on an amd64 runner.
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
@@ -54,8 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # Define the architectures we want to build for
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
