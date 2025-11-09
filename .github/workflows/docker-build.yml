@@ -43,8 +43,12 @@ jobs:
         with:
           images: ghcr.io/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            # 1. Tag as 'main' only on pushes to the 'main' branch (USER REQUEST)
+            type=raw,value=main,enable=${{ github.ref == 'refs/heads/main' }}
+            # 2. Tag with the Git version (e.g., v1.0.1) on tag push
             type=ref,event=tag
+            # 3. Tag as 'latest' on tag push (USER REQUEST)
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
 
       - name: Build and Push Multi-Architecture Image
         uses: docker/build-push-action@v5
