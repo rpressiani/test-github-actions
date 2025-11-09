@@ -60,3 +60,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+      - name: Delete Old GHCR Versions
+        uses: snok/container-retention-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} 
+          repository: ${{ env.IMAGE_NAME }} 
+          package-type: container
+          keep-at-least: 5
+          clean-untagged: true
