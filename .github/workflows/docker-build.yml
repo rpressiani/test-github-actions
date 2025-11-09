@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - 'v*.*.*'
 
 env:
   # The name of the Docker image repository on GHCR
