@@ -42,9 +42,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ env.IMAGE_NAME }}
-          # Generate tags based on git history and event
           tags: |
-            type=sha,prefix=,suffix=,format=short
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=tag
 
@@ -60,11 +58,4 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
-      - name: Delete Old GHCR Versions
-        uses: snok/container-retention-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} 
-          repository: ${{ env.IMAGE_NAME }} 
-          package-type: container
-          keep-at-least: 5
-          clean-untagged: true
+      
